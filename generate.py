@@ -26,14 +26,19 @@ UNIT_LABEL = {
 
 
 def fetch_upstream() -> dict:
-    """用工作区 net_fetch.py（走代理）拉上游 JSON"""
-    proxy = None if os.environ.get("SKIP_PROXY") else ["--proxy", PROXY]
-    raw = subprocess.run(
-        [sys.executable, str(FETCHER), UPSTREAM, *(proxy or [])],
-        capture_output=True, text=True, check=True,
-    ).stdout
-    # net_fetch.py 可能打印额外日志，找第一个 '{' 开始解析
-    return json.loads(raw[raw.index("{"):])
+    """拉取上游 JSON：优先用本地 net_fetch.py（走代理），否则用 urllib 直连"""
+    proxy_arg = [] if os.environ.get("SKIP_PROXY") else ["--proxy", PROXY]
+    if FETCHER.exists():
+        raw = subprocess.run(
+            [sys.executable, str(FETCHER), UPSTREAM, *proxy_arg],
+            capture_output=True, text=True, check=True,
+        ).stdout
+        # net_fetch.py 可能打印额外日志，找第一个 '{' 开始解析
+        return json.loads(raw[raw.index("{"):])
+    import urllib.request
+    req = urllib.request.Request(UPSTREAM, headers={"User-Agent": "relay-benchmark"})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return json.loads(resp.read().decode())
 
 
 def aggregate(records: list[dict]) -> list[dict]:
