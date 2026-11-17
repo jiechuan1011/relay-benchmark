@@ -1,4 +1,4 @@
-# API 中转站实时测评 (api.jiechuan1011.com)
+# API 中转站实时测评 (rank.jiechuan1011.com)
 
 聚合公开数据源的中转站价格/模型排行榜，静态站生成器 + GitHub Pages 部署。
 
@@ -15,7 +15,7 @@ python generate.py   # 拉取上游数据并生成 dist/
 
 ## 部署
 
-推送到 GitHub 后，Actions 自动构建并发布到 GitHub Pages，绑定域名 `api.jiechuan1011.com`。
+推送到 GitHub 后，Actions 自动构建并发布到 GitHub Pages，绑定域名 `rank.jiechuan1011.com`。
 
 ## 路线图
 

@@ -1,7 +1,7 @@
 """静态站生成器 v2：拉取上游价格 JSON → 聚合 → 生成完整网页端
 
 页面功能：站点排行榜（搜索/排序）、模型比价、数据来源标注。
-输出 dist/，部署到 GitHub Pages（api.jiechuan1011.com）。
+输出 dist/，部署到 GitHub Pages（rank.jiechuan1011.com）。
 """
 import html
 import json
@@ -228,7 +228,7 @@ def main():
         json.dumps({"snapshot_date": env["snapshot_date"], "models": models},
                    ensure_ascii=False, indent=2), encoding="utf-8")
     (DIST / "data" / "prices.latest.json").write_text(json.dumps(env, ensure_ascii=False), encoding="utf-8")
-    (DIST / "CNAME").write_text("api.jiechuan1011.com\n", encoding="utf-8")
+    (DIST / "CNAME").write_text("rank.jiechuan1011.com\n", encoding="utf-8")
     print(f"OK: {len(providers)} providers, {len(models)} hot models, {env['record_count']} records -> dist/")
 
 
